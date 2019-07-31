@@ -92,7 +92,7 @@ namespace TestVPN
         {
             try
             {
-                
+                await ConfigurationManager.Load(new JWTRESTClient(Constants.secret), Constants.configurationHosts[0]);
                 var servers = await ConfigurationManager.GetServers();
 
                 foreach (var server in servers)

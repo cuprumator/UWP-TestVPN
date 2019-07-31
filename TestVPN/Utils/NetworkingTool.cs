@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Windows.Networking;
+﻿using Windows.Networking;
 using Windows.Networking.Connectivity;
 
 namespace TestVPN.Utils

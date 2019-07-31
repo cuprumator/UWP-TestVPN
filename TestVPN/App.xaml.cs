@@ -33,8 +33,6 @@ namespace TestVPN
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-
-            ConfigurationManager.Load(new JWTRESTClient(Constants.secret), Constants.configurationHosts[0]);
         }
 
         /// <summary>

@@ -1,34 +1,25 @@
-﻿using System.IO;
-using System.Text;
-using System.Runtime.Serialization.Json;
-using TestVPN.RESTClient;
+﻿using TestVPN.RESTClient;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Windows.Storage.Streams;
 using TestVPN.Utils;
+using Newtonsoft.Json;
 
 namespace TestVPN.Configuration
 {
     class ConfigurationManager
     {
-        public static void Load(IRESTClient client, string url)
+        public static async Task Load(IRESTClient client, string url)
         {
-            Task<string> response = client.Request(url);
-            response.Wait();
+            string response = await client.Request(url);
 
-            conf = Decerealize(response.Result);
-            //protectedJson = await Protector.Protect(response);
+            protectedJson = await Protector.Protect(response);
         }
 
         private static ConnectionConfiguration Decerealize(string json)
         {
-            var deserialized = new ConnectionConfiguration();
-            var ms = new MemoryStream(Encoding.UTF8.GetBytes(json));
-            var ser = new DataContractJsonSerializer(json.GetType());
-
-            ConnectionConfiguration obj = ser.ReadObject(ms) as ConnectionConfiguration;
-
-            return obj;
+            ConnectionConfiguration data = JsonConvert.DeserializeObject<ConnectionConfiguration>(json);
+            return data;
         }
 
         public static async Task<ConnectionConfiguration> GetUnproteced()

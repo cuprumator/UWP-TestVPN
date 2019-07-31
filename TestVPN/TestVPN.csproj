@@ -119,7 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Configuration\ConfigurationLoader.cs" />
+    <Compile Include="Configuration\ConfigurationManager.cs" />
     <Compile Include="RESTClient\IRESTClient.cs" />
     <Compile Include="Utils\Base64Encoder.cs" />
     <Compile Include="Configuration\ConnectionConfiguration.cs" />
@@ -166,6 +166,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.2</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.2</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

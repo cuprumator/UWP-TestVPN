@@ -7,7 +7,7 @@ namespace TestVPN.Configuration
     [DataContract]
     class AssociationParameters
     {
-        [DataMember(Name = "EncryptionAlgorithm")]
+        [DataMember (Name = "EncryptionAlgorithm")]
         public string encryptionAlgorithm;
         [DataMember]
         public string integrityAlgorithm;
@@ -26,18 +26,18 @@ namespace TestVPN.Configuration
         public string serverAddress;
         [DataMember]
         public string remoteIdentifier;
-        [DataMember(Name = "eap-name")]
+        [DataMember (Name = "eap-name")]
         public string eap_name;
-        [DataMember(Name = "eap-secret")]
+        [DataMember (Name = "eap-secret")]
         public string eap_secret;
     }
 
     [DataContract]
     class ConnectionConfiguration
     {
-        [DataMember(Name = "ChildSecurityAssociationParameters")]
+        [DataMember (Name = "ChildSecurityAssociationParameters")]
         public AssociationParameters childSecurityAssociationParameters;
-        [DataMember(Name = "AuthenticationMethod")]
+        [DataMember (Name = "AuthenticationMethod")]
         public string authenticationMethod;
         [DataMember]
         public AssociationParameters ikeSecurityAssociationParameters;

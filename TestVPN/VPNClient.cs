@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Windows.Networking.Vpn;
 using Windows.Security.Credentials;
 using TestVPN.Configuration;
-using TestVPN.Utils;
 
 namespace TestVPN
 {
@@ -85,6 +84,5 @@ namespace TestVPN
 
         public VpnManagementConnectionStatus Connected { get; private set; }
         public string ActiveProfile { get => activeProfile.ProfileName; }
-        public string ActiveServer { get => activeProfile.Servers[0]; }
     }
 }
