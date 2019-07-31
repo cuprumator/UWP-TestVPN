@@ -20,7 +20,7 @@ namespace TestVPN
             {
                 AlwaysOn = true,
                 NativeProtocolType = VpnNativeProtocolType.IpsecIkev2,
-                ProfileName = server.country,
+                ProfileName = Constants.connectionProfileName,
                 RememberCredentials = false,
                 RequireVpnClientAppUI = false,
                 RoutingPolicyType = VpnRoutingPolicyType.ForceAllTrafficOverVpn,
@@ -54,7 +54,7 @@ namespace TestVPN
                 var servers = await ConfigurationManager.GetServers();
                 foreach (var server in servers)
                 {
-                    if (profile.ProfileName == server.country)
+                    if (profile.ProfileName == Constants.connectionProfileName)
                     {
                         var status = profile.ConnectionStatus;
                         if (status == VpnManagementConnectionStatus.Connected)

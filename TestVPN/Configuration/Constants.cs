@@ -9,5 +9,9 @@
         };
 
         public static readonly string secret = "jVnPSec";
+
+        public static readonly string lastServerPropertyName = "last server";
+
+        public static readonly string connectionProfileName = "UWPTestVPN";
     }
 }

@@ -76,7 +76,7 @@ namespace TestVPN
             Status.Text = "Connected";
             Status.Foreground = new SolidColorBrush(Windows.UI.Colors.Green);
             AddressBlock.Text = NetworkingTool.GetLocalIp();
-            ServerList.SelectedValue = vpn.ActiveProfile;
+            AppConfiguration.SaveLastConnectedServer(ServerList.SelectedValue.ToString());
         }
 
         private void SetAppearenceDiconnected()
@@ -104,6 +104,7 @@ namespace TestVPN
 
                 if (status == VpnManagementConnectionStatus.Connected)
                 {
+                    ServerList.SelectedValue = AppConfiguration.LoadLastConnectedServer();
                     SetAppearenceConnected();
                 }
                 else
