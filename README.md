@@ -1,2 +1,2 @@
 # UWP-TestVPM
-Test USP C# VPN application
+Test UWP C# VPN application
