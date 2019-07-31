@@ -119,14 +119,20 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Base64Encoder.cs" />
-    <Compile Include="ConnectionConfiguration.cs" />
-    <Compile Include="JWTBuilder.cs" />
+    <Compile Include="Configuration\ConfigurationLoader.cs" />
+    <Compile Include="RESTClient\IRESTClient.cs" />
+    <Compile Include="Utils\Base64Encoder.cs" />
+    <Compile Include="Configuration\ConnectionConfiguration.cs" />
+    <Compile Include="Configuration\Constants.cs" />
+    <Compile Include="Utils\JWTBuilder.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RESTClient.cs" />
+    <Compile Include="RESTClient\JWTRESTClient.cs" />
+    <Compile Include="Utils\NetworkingTool.cs" />
+    <Compile Include="Utils\Protector.cs" />
+    <Compile Include="VPNClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -135,6 +141,9 @@
     <None Include="TestVPN_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="profile.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

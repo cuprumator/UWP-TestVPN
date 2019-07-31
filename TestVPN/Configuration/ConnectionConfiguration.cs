@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace TestVPN
+namespace TestVPN.Configuration
 {
+#pragma warning disable CS0649
     [DataContract]
     class AssociationParameters
     {
-        [DataMember (Name = "EncryptionAlgorithm")]
+        [DataMember(Name = "EncryptionAlgorithm")]
         public string encryptionAlgorithm;
         [DataMember]
         public string integrityAlgorithm;
@@ -25,18 +26,18 @@ namespace TestVPN
         public string serverAddress;
         [DataMember]
         public string remoteIdentifier;
-        [DataMember (Name = "eap-name")]
+        [DataMember(Name = "eap-name")]
         public string eap_name;
-        [DataMember (Name = "eap-secret")]
+        [DataMember(Name = "eap-secret")]
         public string eap_secret;
     }
 
     [DataContract]
     class ConnectionConfiguration
     {
-        [DataMember (Name = "ChildSecurityAssociationParameters")]
+        [DataMember(Name = "ChildSecurityAssociationParameters")]
         public AssociationParameters childSecurityAssociationParameters;
-        [DataMember (Name = "AuthenticationMethod")]
+        [DataMember(Name = "AuthenticationMethod")]
         public string authenticationMethod;
         [DataMember]
         public AssociationParameters ikeSecurityAssociationParameters;
@@ -53,4 +54,6 @@ namespace TestVPN
         [DataMember]
         public List<Server> servers;
     }
+
+#pragma warning restore CS0649
 }

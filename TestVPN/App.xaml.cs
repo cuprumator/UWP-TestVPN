@@ -15,6 +15,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using TestVPN.Configuration;
+using TestVPN.RESTClient;
 
 namespace TestVPN
 {
@@ -32,11 +34,7 @@ namespace TestVPN
             this.InitializeComponent();
             this.Suspending += OnSuspending;
 
-            JWTRESTClient client = new JWTRESTClient();
-           
-            Task t = client.Request("http://159.65.72.139.sslip.io/api/list.json", "jVnPSec");
-            t.Wait();
-            var obj = JWTRESTClient.ReadToObject(client.ResultJSON);
+            ConfigurationManager.Load(new JWTRESTClient(Constants.secret), Constants.configurationHosts[0]);
         }
 
         /// <summary>

@@ -6,9 +6,27 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="PageLoaded">
+    
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="150"/>
+            <RowDefinition/>
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="50"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="ConnectButton" Click="ButtonClick" Grid.Column="1" Grid.Row="1" Content="Connect" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+        <ComboBox x:Name="ServerList" Grid.Column="1" Grid.Row="1" Header="Server" HorizontalAlignment="Stretch"  VerticalAlignment="Top"/>
+        <ProgressRing x:Name="ConnectionProgress" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center"  VerticalAlignment="Bottom" Margin="0,20,0,0"/>
+        <TextBlock Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0" TextWrapping="NoWrap" Text="IP Address"/>
+        <TextBlock x:Name="AddressBlock" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,40,0,0" TextWrapping="NoWrap" Text=""/>
+        <TextBlock x:Name="Status" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="NoWrap" Text=""/>
 
     </Grid>
 </Page>
