@@ -49,17 +49,18 @@ namespace TestVPN
         public async Task<VpnManagementConnectionStatus> GetStatusAsync()
         {
             var list = await ManagementAgent.GetProfilesAsync();
-            foreach (VpnNativeProfile profile in list)
+            foreach (IVpnProfile profile in list)
             {
                 var servers = await ConfigurationManager.GetServers();
                 foreach (var server in servers)
-                {
+                { 
                     if (profile.ProfileName == Constants.connectionProfileName)
                     {
-                        var status = profile.ConnectionStatus;
+                        VpnNativeProfile nativeProfile = (VpnNativeProfile)profile;
+                        var status = nativeProfile.ConnectionStatus;
                         if (status == VpnManagementConnectionStatus.Connected)
                         {
-                            ActiveProfile = profile;
+                            ActiveProfile = nativeProfile;
                             return status;
                         }
                         return status;
