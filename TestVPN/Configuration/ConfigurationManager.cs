@@ -9,11 +9,11 @@ namespace TestVPN.Configuration
 {
     class ConfigurationManager
     {
-        public static async Task Load(IRESTClient client, string url)
+        public static async Task LoadAsync(IRESTClient client, string url)
         {
             string response = await client.Request(url);
 
-            protectedJson = await Protector.Protect(response);
+            ProtectedJson = await Protector.Protect(response);
         }
 
         private static ConnectionConfiguration Decerealize(string json)
@@ -22,18 +22,17 @@ namespace TestVPN.Configuration
             return data;
         }
 
-        public static async Task<ConnectionConfiguration> GetUnproteced()
+        public static async Task<ConnectionConfiguration> GetUnprotecedAsync()
         {
-            string json = await Protector.Unprotect(protectedJson);
+            string json = await Protector.Unprotect(ProtectedJson);
             return Decerealize(json);
         }
         
-        private static IBuffer protectedJson;
-        private static ConnectionConfiguration conf;
+        private static IBuffer ProtectedJson;
 
         public static async Task<List<Server>> GetServers()
         {
-            var conf = await GetUnproteced();
+            var conf = await GetUnprotecedAsync();
             return conf.servers;
         }
     }

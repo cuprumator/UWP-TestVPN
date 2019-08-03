@@ -10,8 +10,8 @@ namespace TestVPN.Utils
     {
         public static async Task<IBuffer> Protect(string toProtect)
         {
-            DataProtectionProvider Provider = new DataProtectionProvider(strDescriptor);
-            IBuffer protectedBuffer = CryptographicBuffer.ConvertStringToBinary(toProtect, encoding);
+            DataProtectionProvider Provider = new DataProtectionProvider(Descriptor);
+            IBuffer protectedBuffer = CryptographicBuffer.ConvertStringToBinary(toProtect, Encoding);
 
             return await Provider.ProtectAsync(protectedBuffer);
         }
@@ -22,10 +22,10 @@ namespace TestVPN.Utils
 
             IBuffer buffUnprotected = await Provider.UnprotectAsync(tounprotect);
             
-            return CryptographicBuffer.ConvertBinaryToString(encoding, buffUnprotected);
+            return CryptographicBuffer.ConvertBinaryToString(Encoding, buffUnprotected);
         }
 
-        private static string strDescriptor = "LOCAL=user";
-        private static BinaryStringEncoding encoding = BinaryStringEncoding.Utf8;
+        private static string Descriptor = "LOCAL=user";
+        private static BinaryStringEncoding Encoding = BinaryStringEncoding.Utf8;
     }
 }

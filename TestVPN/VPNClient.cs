@@ -11,7 +11,7 @@ namespace TestVPN
     {
         public VPNClient()
         {
-            this.mgr = new VpnManagementAgent();
+            this.ManagementAgent = new VpnManagementAgent();
         }
 
         public async Task<VpnManagementConnectionStatus> Connect(Server server)
@@ -38,17 +38,17 @@ namespace TestVPN
                 Password = server.eap_secret
             };
 
-            VpnManagementErrorStatus profileStatus = await mgr.AddProfileFromObjectAsync(profile);
+            VpnManagementErrorStatus profileStatus = await ManagementAgent.AddProfileFromObjectAsync(profile);
 
-            VpnManagementErrorStatus connectStatus = await mgr.ConnectProfileWithPasswordCredentialAsync(profile, credentials);
-            activeProfile = profile;
+            VpnManagementErrorStatus connectStatus = await ManagementAgent.ConnectProfileWithPasswordCredentialAsync(profile, credentials);
+            ActiveProfile = profile;
 
             return profile.ConnectionStatus;
         }
 
         public async Task<VpnManagementConnectionStatus> GetStatusAsync()
         {
-            var list = await mgr.GetProfilesAsync();
+            var list = await ManagementAgent.GetProfilesAsync();
             foreach (VpnNativeProfile profile in list)
             {
                 var servers = await ConfigurationManager.GetServers();
@@ -59,7 +59,7 @@ namespace TestVPN
                         var status = profile.ConnectionStatus;
                         if (status == VpnManagementConnectionStatus.Connected)
                         {
-                            activeProfile = profile;
+                            ActiveProfile = profile;
                             return status;
                         }
                         return status;
@@ -72,17 +72,16 @@ namespace TestVPN
 
         public async Task Disconnect()
         {
-            if (activeProfile != null)
+            if (ActiveProfile != null)
             {
-                await mgr.DisconnectProfileAsync(activeProfile);
-                await mgr.DeleteProfileAsync(activeProfile);
+                await ManagementAgent.DisconnectProfileAsync(ActiveProfile);
+                await ManagementAgent.DeleteProfileAsync(ActiveProfile);
             }
         }
 
-        private VpnManagementAgent mgr;
-        private VpnNativeProfile activeProfile;
+        private VpnManagementAgent ManagementAgent;
+        private VpnNativeProfile ActiveProfile;
 
         public VpnManagementConnectionStatus Connected { get; private set; }
-        public string ActiveProfile { get => activeProfile.ProfileName; }
     }
 }

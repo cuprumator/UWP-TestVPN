@@ -8,15 +8,15 @@ namespace TestVPN.RESTClient
     {
         public JWTRESTClient(string secret)
         {
-            this.client = new HttpClient();
-            jtwTocken = JWTBuilder.Build(payload, secret);
+            this.Client = new HttpClient();
+            JWTTocken = JWTBuilder.Build(Payload, secret);
         }
 
         public async Task<string> Request(string url)
         {
-            this.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jtwTocken);
+            this.Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", JWTTocken);
 
-            HttpResponseMessage response = await this.client.GetAsync(url);
+            HttpResponseMessage response = await this.Client.GetAsync(url);
 
             HttpContent content = response.Content;
             
@@ -24,10 +24,10 @@ namespace TestVPN.RESTClient
             return await content.ReadAsStringAsync();
         }
 
-        private readonly string payload = "{\"name\":\"John Doe\"}";
-        private readonly HttpClient client;
-        private string jtwTocken;
+        private readonly string Payload = "{\"name\":\"John Doe\"}";
+        private readonly HttpClient Client;
+        private string JWTTocken;
 
-        public string JtwTocken { set => jtwTocken = JWTBuilder.Build(payload, value); }
+        public string JtwTocken { set => JWTTocken = JWTBuilder.Build(Payload, value); }
     }
 }

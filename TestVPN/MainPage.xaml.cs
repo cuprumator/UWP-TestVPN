@@ -31,7 +31,7 @@ namespace TestVPN
     {
         public MainPage()
         {
-            vpn = new VPNClient();
+            VPN = new VPNClient();
 
             this.InitializeComponent();
 
@@ -43,17 +43,17 @@ namespace TestVPN
         {
             try
             {
-                var status = await vpn.GetStatusAsync();
+                var status = await VPN.GetStatusAsync();
 
                 if (status == VpnManagementConnectionStatus.Connected)
                 {
-                    await vpn.Disconnect();
+                    await VPN.Disconnect();
                     SetAppearenceDiconnected();
                 }
                 else
                 {
                     ConnectionProgress.IsActive = true;
-                    status = await vpn.Connect((await ConfigurationManager.GetServers())[ServerList.SelectedIndex]);
+                    status = await VPN.Connect((await ConfigurationManager.GetServers())[ServerList.SelectedIndex]);
 
                     if (status == VpnManagementConnectionStatus.Connected)
                     {
@@ -65,7 +65,7 @@ namespace TestVPN
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                await vpn.Disconnect();
+                await VPN.Disconnect();
             }
         }
 
@@ -92,7 +92,7 @@ namespace TestVPN
         {
             try
             {
-                await ConfigurationManager.Load(new JWTRESTClient(Constants.secret), Constants.configurationHosts[0]);
+                await ConfigurationManager.LoadAsync(new JWTRESTClient(Constants.secret), Constants.configurationHosts[0]);
                 var servers = await ConfigurationManager.GetServers();
 
                 foreach (var server in servers)
@@ -100,7 +100,7 @@ namespace TestVPN
                     ServerList.Items.Add(server.country);
                 }
 
-                var status = await vpn.GetStatusAsync();
+                var status = await VPN.GetStatusAsync();
 
                 if (status == VpnManagementConnectionStatus.Connected)
                 {
@@ -115,10 +115,10 @@ namespace TestVPN
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                await vpn.Disconnect();
+                await VPN.Disconnect();
             }
         }
 
-        private VPNClient vpn;
+        private VPNClient VPN;
     }
 }
