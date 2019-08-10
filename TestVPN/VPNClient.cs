@@ -40,7 +40,7 @@ namespace TestVPN
 
             VpnManagementErrorStatus profileStatus = await ManagementAgent.AddProfileFromObjectAsync(profile);
 
-            VpnManagementErrorStatus connectStatus = await ManagementAgent.ConnectProfileWithPasswordCredentialAsync(profile, credentials);
+            //VpnManagementErrorStatus connectStatus = await ManagementAgent.ConnectProfileWithPasswordCredentialAsync(profile, credentials);
             ActiveProfile = profile;
 
             return profile.ConnectionStatus;
@@ -49,21 +49,32 @@ namespace TestVPN
         public async Task<VpnManagementConnectionStatus> GetStatusAsync()
         {
             var list = await ManagementAgent.GetProfilesAsync();
-            foreach (IVpnProfile profile in list)
+            foreach (var profile in list)
             {
-                var servers = await ConfigurationManager.GetServers();
-                foreach (var server in servers)
-                { 
-                    if (profile.ProfileName == Constants.connectionProfileName)
+                if (profile is VpnNativeProfile)
+                {
+                    var servers = await ConfigurationManager.GetServers();
+                    foreach (var server in servers)
                     {
-                        VpnNativeProfile nativeProfile = (VpnNativeProfile)profile;
-                        var status = nativeProfile.ConnectionStatus;
-                        if (status == VpnManagementConnectionStatus.Connected)
+                        if (profile.ProfileName == Constants.connectionProfileName)
                         {
-                            ActiveProfile = nativeProfile;
-                            return status;
+                            VpnNativeProfile nativeProfile = (VpnNativeProfile)profile;
+                            try
+                            {
+                                var status = nativeProfile.ConnectionStatus;
+                                if (status == VpnManagementConnectionStatus.Connected)
+                                {
+                                    ActiveProfile = nativeProfile;
+                                    return status;
+                                }
+                                return status;
+                            }
+                            catch (Exception)
+                            {
+                                await ManagementAgent.DeleteProfileAsync(nativeProfile);
+                                return VpnManagementConnectionStatus.Disconnected;
+                            }
                         }
-                        return status;
                     }
                 }
                
