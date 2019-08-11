@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 using Windows.Networking.Vpn;
 using Windows.Security.Credentials;
 using TestVPN.Configuration;
+using System.Diagnostics;
 
 namespace TestVPN
 {
-    class VPNClient 
+    class VPNClient
     {
         public VPNClient()
         {
@@ -39,11 +40,25 @@ namespace TestVPN
             };
 
             VpnManagementErrorStatus profileStatus = await ManagementAgent.AddProfileFromObjectAsync(profile);
+            if (profileStatus == VpnManagementErrorStatus.Ok)
+            {
+                VpnManagementErrorStatus connectStatus = await ManagementAgent.ConnectProfileWithPasswordCredentialAsync(profile, credentials);
 
-            //VpnManagementErrorStatus connectStatus = await ManagementAgent.ConnectProfileWithPasswordCredentialAsync(profile, credentials);
-            ActiveProfile = profile;
+                if (connectStatus == VpnManagementErrorStatus.Ok)
+                {
+                    ActiveProfile = profile;
+                    return profile.ConnectionStatus;
+                }
+                else
+                {
+                    throw new Exception("Connetion failed");
+                }
 
-            return profile.ConnectionStatus;
+            }
+            else
+            {
+                throw new Exception("VPN profile add failed");
+            }
         }
 
         public async Task<VpnManagementConnectionStatus> GetStatusAsync()
@@ -77,7 +92,7 @@ namespace TestVPN
                         }
                     }
                 }
-               
+
             }
             return VpnManagementConnectionStatus.Disconnected;
         }
@@ -86,14 +101,34 @@ namespace TestVPN
         {
             if (ActiveProfile != null)
             {
-                await ManagementAgent.DisconnectProfileAsync(ActiveProfile);
+                if (VpnManagementErrorStatus.Ok == await ManagementAgent.DisconnectProfileAsync(ActiveProfile))
+                {
+                    await RemoveConnection();
+                }
+                else
+                {
+                    throw new Exception("Could not disconnect");
+                }
+            }
+            else
+            {
+                throw new Exception("Active profile not valid");
+            }
+        }
+
+        public async Task RemoveConnection()
+        {
+            try
+            {
                 await ManagementAgent.DeleteProfileAsync(ActiveProfile);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
             }
         }
 
         private VpnManagementAgent ManagementAgent;
         private VpnNativeProfile ActiveProfile;
-
-        public VpnManagementConnectionStatus Connected { get; private set; }
     }
 }

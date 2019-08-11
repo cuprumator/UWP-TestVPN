@@ -27,7 +27,5 @@ namespace TestVPN.RESTClient
         private readonly string Payload = "{\"name\":\"John Doe\"}";
         private readonly HttpClient Client;
         private string JWTTocken;
-
-        public string JtwTocken { set => JWTTocken = JWTBuilder.Build(Payload, value); }
     }
 }

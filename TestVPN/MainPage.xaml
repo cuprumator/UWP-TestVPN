@@ -5,6 +5,7 @@
     xmlns:local="using:TestVPN"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:TestVPN.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="PageLoaded">
@@ -21,12 +22,30 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="ConnectButton" Click="ButtonClick" Grid.Column="1" Grid.Row="1" Content="Connect" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
-        <ComboBox x:Name="ServerList" Grid.Column="1" Grid.Row="1" Header="Server" HorizontalAlignment="Stretch"  VerticalAlignment="Top"/>
+        <Button x:Name="ConnectButton" 
+                Background="{x:Bind ViewModel.ButtonColor, Mode=OneWay}"
+                Content="{x:Bind ViewModel.ButtonText, Mode=OneWay }"
+                Click="ButtonClick" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+        </Button>
+        <ComboBox x:Name="ServerList" 
+                  ItemsSource="{x:Bind ViewModel.Servers, Mode=OneWay }"  
+                  SelectedIndex="{x:Bind ViewModel.SelectedServerIndex, Mode=TwoWay}" 
+                  Grid.Column="1" Grid.Row="1" Header="Server" HorizontalAlignment="Stretch"  VerticalAlignment="Top">
+            <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="viewModels:ServerViewModel">
+                    <TextBlock Text="{x:Bind Country, Mode=OneWay}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <ProgressRing x:Name="ConnectionProgress" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Bottom" Margin="0,20,0,0" MinWidth="50" MinHeight="50"/>
         <TextBlock Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0" TextWrapping="NoWrap" Text="IP Address"/>
-        <TextBlock x:Name="AddressBlock" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,40,0,0" TextWrapping="NoWrap" Text=""/>
-        <TextBlock x:Name="Status" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="NoWrap" Text="" FontSize="24"/>
+        <TextBlock x:Name="AddressBlock" 
+                   Text="{x:Bind ViewModel.AddressText, Mode=OneWay}"
+                   Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,40,0,0" TextWrapping="NoWrap"/>
+        <TextBlock x:Name="Status" 
+                   Text="{x:Bind ViewModel.StatusText, Mode=OneWay}"
+                   Foreground="{x:Bind ViewModel.StatusColor, Mode=OneWay}"
+                   Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="NoWrap" FontSize="24"/>
 
     </Grid>
 </Page>

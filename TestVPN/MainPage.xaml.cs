@@ -1,39 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using Windows.Foundation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using TestVPN.Configuration;
-using TestVPN.Utils;
-using TestVPN.RESTClient;
-using Windows.Networking.Vpn;
-using System.Diagnostics;
+using TestVPN.ViewModels;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace TestVPN
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
         public MainPage()
         {
-            VPN = new VPNClient();
-
             this.InitializeComponent();
+
+            ViewModel = new MainPageViewModel();
 
             ApplicationView.PreferredLaunchViewSize = new Size(480, 800);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
@@ -41,84 +22,16 @@ namespace TestVPN
 
         private async void ButtonClick(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                var status = await VPN.GetStatusAsync();
-
-                if (status == VpnManagementConnectionStatus.Connected)
-                {
-                    await VPN.Disconnect();
-                    SetAppearenceDiconnected();
-                }
-                else
-                {
-                    ConnectionProgress.IsActive = true;
-                    status = await VPN.Connect((await ConfigurationManager.GetServers())[ServerList.SelectedIndex]);
-
-                    if (status == VpnManagementConnectionStatus.Connected)
-                    {
-                        ConnectionProgress.IsActive = false;
-                        SetAppearenceConnected();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                await VPN.Disconnect();
-            }
-        }
-
-        private void SetAppearenceConnected()
-        {
-            ConnectButton.Background = new SolidColorBrush(Windows.UI.Colors.Red);
-            ConnectButton.Content = "Disconnect";
-            Status.Text = "Connected";
-            Status.Foreground = new SolidColorBrush(Windows.UI.Colors.Green);
-            AddressBlock.Text = NetworkingTool.GetLocalIp();
-            AppConfiguration.SaveLastConnectedServer(ServerList.SelectedValue.ToString());
-        }
-
-        private void SetAppearenceDiconnected()
-        {
-            ConnectButton.Background = new SolidColorBrush(Windows.UI.Colors.Green);
-            ConnectButton.Content = "Connect";
-            Status.Text = "Not Connected";
-            Status.Foreground = new SolidColorBrush(Windows.UI.Colors.Gray);
-            AddressBlock.Text = NetworkingTool.GetLocalIp();
+            ConnectionProgress.IsActive = true;
+            await ViewModel.OnConnectcClicked();
+            ConnectionProgress.IsActive = false;
         }
 
         private async void PageLoaded(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                await ConfigurationManager.LoadAsync(new JWTRESTClient(Constants.secret), Constants.configurationHosts[0]);
-                var servers = await ConfigurationManager.GetServers();
-
-                foreach (var server in servers)
-                {
-                    ServerList.Items.Add(server.country);
-                }
-
-                var status = await VPN.GetStatusAsync();
-
-                if (status == VpnManagementConnectionStatus.Connected)
-                {
-                    ServerList.SelectedValue = AppConfiguration.LoadLastConnectedServer();
-                    SetAppearenceConnected();
-                }
-                else
-                {
-                    SetAppearenceDiconnected();
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                await VPN.Disconnect();
-            }
+            await ViewModel.LoadConfiguration();
         }
 
-        private VPNClient VPN;
+        private MainPageViewModel ViewModel;
     }
 }

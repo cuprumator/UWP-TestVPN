@@ -11,8 +11,8 @@
     <AssemblyName>TestVPN</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.15063.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17134.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -119,21 +119,24 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Configuration\AppConfiguration.cs" />
-    <Compile Include="Configuration\ConfigurationManager.cs" />
-    <Compile Include="RESTClient\IRESTClient.cs" />
-    <Compile Include="Utils\Base64Encoder.cs" />
-    <Compile Include="Configuration\ConnectionConfiguration.cs" />
-    <Compile Include="Configuration\Constants.cs" />
-    <Compile Include="Utils\JWTBuilder.cs" />
+    <Compile Include="Model\Configuration\AppConfiguration.cs" />
+    <Compile Include="Model\Configuration\ConfigurationManager.cs" />
+    <Compile Include="Model\RESTClient\IRESTClient.cs" />
+    <Compile Include="Model\Utils\Base64Encoder.cs" />
+    <Compile Include="Model\Configuration\ConnectionConfiguration.cs" />
+    <Compile Include="Model\Configuration\Constants.cs" />
+    <Compile Include="Model\Utils\JWTBuilder.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\NotificationBase.cs" />
+    <Compile Include="ViewModels\ServerViewModel.cs" />
+    <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RESTClient\JWTRESTClient.cs" />
-    <Compile Include="Utils\NetworkingTool.cs" />
-    <Compile Include="Utils\Protector.cs" />
-    <Compile Include="VPNClient.cs" />
+    <Compile Include="Model\RESTClient\JWTRESTClient.cs" />
+    <Compile Include="Model\Utils\NetworkingTool.cs" />
+    <Compile Include="Model\Utils\Protector.cs" />
+    <Compile Include="Model\VPNClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
